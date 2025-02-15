@@ -23,6 +23,7 @@ df.replace("None", np.nan, inplace=True)
 
 df.drop_duplicates(inplace=True)
 df = df.drop(columns=['product_id'])
+df = df.drop(columns=['icing'])
 
 def extract_airports(report):
     if pd.isna(report):
