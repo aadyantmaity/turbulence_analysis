@@ -20,6 +20,7 @@ df['lon'] = pd.to_numeric(df['lon'], errors='coerce')
 df.replace("None", np.nan, inplace=True)
 
 df.drop_duplicates(inplace=True)
+df = df.drop(columns=['product_id'])
 
 def extract_airports(report):
     if pd.isna(report):
