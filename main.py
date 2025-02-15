@@ -17,6 +17,8 @@ df['fl'] = pd.to_numeric(df['fl'], errors='coerce').astype('Int64')
 df['lat'] = pd.to_numeric(df['lat'], errors='coerce')
 df['lon'] = pd.to_numeric(df['lon'], errors='coerce')
 
+df = df.dropna(subset=['fl'])
+
 df.replace("None", np.nan, inplace=True)
 
 df.drop_duplicates(inplace=True)
