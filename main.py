@@ -4,6 +4,7 @@ import re
 import matplotlib.pyplot as plt
 import os
 
+
 df = pd.read_csv("pireps_200311300000_202502132359 (1).csv", low_memory=False)
 
 df.columns = df.columns.str.lower().str.replace(" ", "_")
@@ -45,6 +46,13 @@ df.to_csv("preprocessed_dataset.csv", index=False)
 burbank_turbulence.to_csv("burbank_turbulence.csv", index=False)
 burbank_turbulence_severe.to_csv("burbank_turbulence_severe.csv", index=False)
 
+df['year'] = df['valid'].dt.year
+burbank_turbulence.loc[:,'year'] = burbank_turbulence['valid'].dt.year
+
+min_year = df['year'].min()
+max_year = df['year'].max()
+year_chunks = list(range(min_year, max_year + 1, 3))
+
 output_dir = "plots"
 os.makedirs(output_dir, exist_ok=True)
 
@@ -53,14 +61,6 @@ burbank_dir = os.path.join(output_dir, "burbank")
 
 os.makedirs(general_dir, exist_ok=True)
 os.makedirs(burbank_dir, exist_ok=True)
-
-df['year'] = df['valid'].dt.year
-burbank_turbulence.loc[:,'year'] = burbank_turbulence['valid'].dt.year
-
-min_year = df['year'].min()
-max_year = df['year'].max()
-
-year_chunks = list(range(min_year, max_year + 1, 3))
 
 def plot_turbulence_by_chunks(df, title_prefix, save_dir):
     for start_year in year_chunks:
@@ -96,3 +96,45 @@ def plot_turbulence_by_chunks(df, title_prefix, save_dir):
 
 plot_turbulence_by_chunks(df, "Turbulence Reports", general_dir)
 plot_turbulence_by_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_dir)
+
+detailed_general_dir = os.path.join(output_dir, "detailed_general")
+detailed_burbank_dir = os.path.join(output_dir, "detailed_burbank")
+
+os.makedirs(detailed_general_dir, exist_ok=True)
+os.makedirs(detailed_burbank_dir, exist_ok=True)
+
+def plot_detailed_turbulence(df, title_prefix, save_dir):
+    for start_year in year_chunks:
+        end_year = start_year + 2
+        chunk_df = df[(df['year'] >= start_year) & (df['year'] <= end_year)]
+        
+        if chunk_df.empty:
+            continue  
+        
+        title = f"{title_prefix} {start_year}-{end_year}"
+        filename = f"detailed_turbulence_{start_year}_{end_year}.png"
+        filepath = os.path.join(save_dir, filename)
+        
+        plt.figure(figsize=(25, 6))
+
+        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False)]
+        plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color='green', label='Moderate Turbulence (MOD)', alpha=0.7)
+
+        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False)]
+        plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color='red', label='Severe Turbulence (SEV)', alpha=0.7)
+
+        plt.xlabel("Date (UTC)")
+        plt.ylabel("Flight Level (feet)")
+        plt.title(title)
+        plt.legend()
+        plt.grid(True)
+
+        unique_dates = sorted(chunk_df['valid'].dt.strftime('%Y-%m-%d').unique())
+        plt.xticks(ticks=pd.to_datetime(unique_dates), labels=unique_dates, rotation=45)
+
+        plt.savefig(filepath, dpi=300, bbox_inches='tight')
+        print(f"Saved plot: {filepath}")
+        plt.close()
+
+plot_detailed_turbulence(df, "Detailed Turbulence Reports", detailed_general_dir)
+plot_detailed_turbulence(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir)
