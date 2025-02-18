@@ -39,15 +39,18 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
         plt.xticks(rotation=90)
         plt.grid(True)
 
-        plt.ylim(0, 40000)
 
         start_date = chunk_df['valid'].min()
         end_date = chunk_df['valid'].max()
         total_days = (end_date - start_date).days + 1
         all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
 
-        plt.xticks(all_dates, [date.strftime('%Y-%m-%d') for date in all_dates], rotation=90, fontsize=5)
+        plt.xlim(start_date, end_date)
+        plt.ylim(0, 40000)
+
+        plt.xticks(all_dates, [date.strftime('%Y-%m-%d') for date in all_dates], rotation=90, fontsize=3)
         plt.gca().xaxis.set_tick_params(width=1, length=4, direction='inout', grid_color='gray', grid_alpha=0.5)
+
         if annotation_status:
             grouped_by_date = chunk_df.groupby(chunk_df['valid'].dt.date).size()
 
