@@ -14,12 +14,14 @@ for column in df.select_dtypes(include='object').columns:
 
 df['valid'] = pd.to_datetime(df['valid'], format='%Y%m%d%H%M', utc=True)
 df['fl'] = pd.to_numeric(df['fl'], errors='coerce').astype('Int64')
+#df["fl"] = (df["fl"] // 100).astype("Int64")
 df['lat'] = pd.to_numeric(df['lat'], errors='coerce')
 df['lon'] = pd.to_numeric(df['lon'], errors='coerce')
 df = df.dropna(subset=['fl'])
 df.replace("None", np.nan, inplace=True)
 df.drop_duplicates(inplace=True)
 df = df.drop(columns=['product_id', 'icing'])
+
 
 def extract_airports(report):
     if pd.isna(report):
@@ -90,16 +92,17 @@ if __name__ == "__main__":
     #svg plots
 
     #PLOT TURBULENCE DETAILED
-    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir, True)
-    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir, True)
+    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
+    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_svg, True)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False, True)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True, True)
+    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
+    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
+    
 
     #PLOT TURBULENCE FULL Range
-    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False, True)
-    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir, True, True)
+    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_svg, False, True)
+    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_svg, True, True)
     '''
 
     #png plots

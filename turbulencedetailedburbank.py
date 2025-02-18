@@ -33,7 +33,7 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
         plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=5)
 
         plt.xlabel("Date (UTC)")
-        plt.ylabel("Flight Level (feet)")
+        plt.ylabel("Flight Level (FL)")
         plt.title(title)
         plt.legend()
         plt.grid(True)

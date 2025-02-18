@@ -34,7 +34,7 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
         plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=3)
 
         plt.xlabel("Date (UTC)")
-        plt.ylabel("Flight Level (feet)")
+        plt.ylabel("Flight Level (FL)")
         plt.title(title)
         plt.xticks(rotation=90)
         plt.grid(True)
