@@ -79,5 +79,5 @@ if __name__ == "__main__":
     #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True)
 
     #PLOT TURBULENCE FULL Range
-    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False)
+    #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False)
     #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir, True)

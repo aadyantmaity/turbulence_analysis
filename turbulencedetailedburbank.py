@@ -12,7 +12,7 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir):
             continue  
 
         title = f"{title_prefix} {start_year}-{end_year}"
-        filename = f"detailed_turbulence_burbank{start_year}_{end_year}.png"
+        filename = f"detailed_turbulence_burbank{start_year}_{end_year}.svg"
         filepath = os.path.join(save_dir, filename)
 
         plt.figure(figsize=(150, 10))

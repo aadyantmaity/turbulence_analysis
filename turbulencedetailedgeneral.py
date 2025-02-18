@@ -54,6 +54,6 @@ def plot_detailed_turbulence_general(df, title_prefix, save_dir):
             ha='right'
         )
 
-        plt.savefig(filepath, dpi=300, bbox_inches='tight', format='svg')
+        plt.savefig(filepath, dpi=300, bbox_inches='tight')
         print(f"Saved plot: {filepath}")
         plt.close()
