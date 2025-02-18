@@ -48,21 +48,37 @@ year_chunks = list(range(min_year, max_year + 1, 2))
 year_chunks_general = list(range(min_year, max_year))
 year_chunks_3 = list(range(min_year, max_year + 1, 3))
 
-output_dir = "plots"
-detailed_general_dir = os.path.join(output_dir, "turbulence_detailed_general")
-detailed_burbank_dir = os.path.join(output_dir, "turbulence_detailed_burbank")
-general_3year_dir = os.path.join(output_dir, "general_3year")
-burbank_3year_dir = os.path.join(output_dir, "burbank_3year")
-burbank_full_dir = os.path.join(output_dir, "burbank_full")
-general_full_dir = os.path.join(output_dir, "general_full")
+output_dir_svg = "svg_plots"
+detailed_general_dir_svg = os.path.join(output_dir_svg, "turbulence_detailed_general")
+detailed_burbank_dir_svg = os.path.join(output_dir_svg, "turbulence_detailed_burbank")
+general_3year_dir_svg = os.path.join(output_dir_svg, "general_3year")
+burbank_3year_dir_svg = os.path.join(output_dir_svg, "burbank_3year")
+burbank_full_dir_svg = os.path.join(output_dir_svg, "burbank_full")
+general_full_dir_svg = os.path.join(output_dir_svg, "general_full")
 
-os.makedirs(output_dir, exist_ok=True)
-os.makedirs(detailed_general_dir, exist_ok=True)
-os.makedirs(detailed_burbank_dir, exist_ok=True)
-os.makedirs(general_3year_dir, exist_ok=True)
-os.makedirs(burbank_3year_dir, exist_ok=True)
-os.makedirs(general_full_dir, exist_ok=True)
-os.makedirs(burbank_full_dir, exist_ok=True)
+os.makedirs(output_dir_svg, exist_ok=True)
+os.makedirs(detailed_general_dir_svg, exist_ok=True)
+os.makedirs(detailed_burbank_dir_svg, exist_ok=True)
+os.makedirs(general_3year_dir_svg, exist_ok=True)
+os.makedirs(burbank_3year_dir_svg, exist_ok=True)
+os.makedirs(general_full_dir_svg, exist_ok=True)
+os.makedirs(burbank_full_dir_svg, exist_ok=True)
+
+output_dir_png= "png_plots"
+detailed_general_dir_png = os.path.join(output_dir_png, "turbulence_detailed_general")
+detailed_burbank_dir_png = os.path.join(output_dir_png, "turbulence_detailed_burbank")
+general_3year_dir_png = os.path.join(output_dir_png, "general_3year")
+burbank_3year_dir_png = os.path.join(output_dir_png, "burbank_3year")
+burbank_full_dir_png = os.path.join(output_dir_png, "burbank_full")
+general_full_dir_png = os.path.join(output_dir_png, "general_full")
+
+os.makedirs(output_dir_png, exist_ok=True)
+os.makedirs(detailed_general_dir_png, exist_ok=True)
+os.makedirs(detailed_burbank_dir_png, exist_ok=True)
+os.makedirs(general_3year_dir_png, exist_ok=True)
+os.makedirs(burbank_3year_dir_png, exist_ok=True)
+os.makedirs(general_full_dir_png, exist_ok=True)
+os.makedirs(burbank_full_dir_png, exist_ok=True)
 
 if __name__ == "__main__":
     from turbulence3yearchunks import plot_turbulence_by_3year_chunks
@@ -70,14 +86,32 @@ if __name__ == "__main__":
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
     from turbulencefull import plot_turbulence_full_range
 
+    '''
+    #svg plots
+
     #PLOT TURBULENCE DETAILED
-    #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir)
-    #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir)
+    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir, True)
+    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir, True)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False)
-    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True)
+    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False, True)
+    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True, True)
 
     #PLOT TURBULENCE FULL Range
-    #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False)
-    #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir, True)
+    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False, True)
+    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir, True, True)
+    '''
+
+    #png plots
+
+    #PLOT TURBULENCE DETAILED
+    #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_png, False)
+    #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
+
+    #PLOT TURBULENCE 3 YEAR CHUNKS
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
+
+    #PLOT TURBULENCE FULL Range
+    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png, False, False)
+    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_png, True, False)

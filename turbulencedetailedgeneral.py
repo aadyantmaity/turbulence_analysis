@@ -4,7 +4,7 @@ from matplotlib.ticker import MaxNLocator
 import pandas as pd
 import os
 
-def plot_detailed_turbulence_general(df, title_prefix, save_dir):
+def plot_detailed_turbulence_general(df, title_prefix, save_dir, svg_status):
     for start_year in year_chunks_general:
         end_year = start_year + 1
         chunk_df = df[(df['year'] >= start_year) & (df['year'] <= end_year)]
@@ -13,7 +13,10 @@ def plot_detailed_turbulence_general(df, title_prefix, save_dir):
             continue  
 
         title = f"{title_prefix} {start_year}-{end_year}"
-        filename = f"detailed_turbulence_general_{start_year}_{end_year}.svg"
+        if svg_status:
+            filename = f"detailed_turbulence_general_{start_year}_{end_year}.svg"
+        else:
+            filename = f"detailed_turbulence_general_{start_year}_{end_year}.png"
         filepath = os.path.join(save_dir, filename)
 
         plt.figure(figsize=(150, 10))
@@ -54,6 +57,6 @@ def plot_detailed_turbulence_general(df, title_prefix, save_dir):
             ha='right'
         )
 
-        plt.savefig(filepath, dpi=300, bbox_inches='tight')
+        plt.savefig(filepath, dpi=150, bbox_inches='tight')
         print(f"Saved plot: {filepath}")
         plt.close()

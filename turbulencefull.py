@@ -4,7 +4,7 @@ import os
 from matplotlib.ticker import MaxNLocator 
 import pandas as pd
 
-def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status):
+def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, svg_status):
     start_year, end_year = 2003, 2025
     chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]
         
@@ -12,7 +12,11 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status):
         return 
     
     title = f"{title_prefix} {start_year}-{end_year - 1}"
-    filename = f"turbulence_{start_year}_{end_year - 1}.svg"
+    
+    if svg_status:
+        filename = f"turbulence_{start_year}_{end_year - 1}.svg"
+    else:
+        filename = f"turbulence_{start_year}_{end_year - 1}.png"
     filepath = os.path.join(save_dir, filename)
     
     plt.figure(figsize=(500, 10))
@@ -59,6 +63,6 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status):
                 color='blue', 
                 rotation=20)
 
-    plt.savefig(filepath, dpi=300, bbox_inches='tight')
+    plt.savefig(filepath, dpi=100, bbox_inches='tight')
     print(f"Saved plot: {filepath}")
     plt.close()

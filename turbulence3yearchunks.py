@@ -4,7 +4,7 @@ import os
 from matplotlib.ticker import MaxNLocator 
 import pandas as pd
 
-def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_status):
+def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_status, svg_status):
     for start_year in year_chunks_3:
         end_year = start_year + 3
         chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]
@@ -13,7 +13,10 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
             continue  
         
         title = f"{title_prefix} {start_year}-{end_year - 1}"
-        filename = f"turbulence_{start_year}_{end_year - 1}.svg"
+        if svg_status:
+            filename = f"turbulence_{start_year}_{end_year - 1}.svg"
+        else: 
+            filename = f"turbulence_{start_year}_{end_year - 1}.png"
         filepath = os.path.join(save_dir, filename)
         
         plt.figure(figsize=(150, 6))
