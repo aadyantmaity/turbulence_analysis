@@ -5,7 +5,6 @@ import re
 import matplotlib.pyplot as plt
 from config import year_chunks, year_chunks_general, year_chunks_3
 
-
 df = pd.read_csv("pireps_200311300000_202502132359 (1).csv", low_memory=False)
 
 df.columns = df.columns.str.lower().str.replace(" ", "_")
@@ -54,22 +53,31 @@ detailed_general_dir = os.path.join(output_dir, "turbulence_detailed_general")
 detailed_burbank_dir = os.path.join(output_dir, "turbulence_detailed_burbank")
 general_3year_dir = os.path.join(output_dir, "general_3year")
 burbank_3year_dir = os.path.join(output_dir, "burbank_3year")
+burbank_full_dir = os.path.join(output_dir, "burbank_full")
+general_full_dir = os.path.join(output_dir, "general_full")
 
 os.makedirs(output_dir, exist_ok=True)
 os.makedirs(detailed_general_dir, exist_ok=True)
 os.makedirs(detailed_burbank_dir, exist_ok=True)
 os.makedirs(general_3year_dir, exist_ok=True)
 os.makedirs(burbank_3year_dir, exist_ok=True)
+os.makedirs(general_full_dir, exist_ok=True)
+os.makedirs(burbank_full_dir, exist_ok=True)
 
 if __name__ == "__main__":
     from turbulence3yearchunks import plot_turbulence_by_3year_chunks
     from turbulencedetailedburbank import plot_detailed_turbulence_burbank
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
+    from turbulencefull import plot_turbulence_full_range
 
     #PLOT TURBULENCE DETAILED
     #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir)
     #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir)
 
-    #PLOT TURBULENCE CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False)
+    #PLOT TURBULENCE 3 YEAR CHUNKS
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False)
     #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True)
+
+    #PLOT TURBULENCE FULL Range
+    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir, False)
+    #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir, True)
