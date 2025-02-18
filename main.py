@@ -71,5 +71,5 @@ if __name__ == "__main__":
     #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir)
 
     #PLOT TURBULENCE CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir)
+    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir, False)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir, True)
