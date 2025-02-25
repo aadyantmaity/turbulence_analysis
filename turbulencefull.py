@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.ticker import MaxNLocator 
 import pandas as pd
+import matplotlib.dates as mdates
 
 def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, svg_status):
     start_year, end_year = 2003, 2025
@@ -19,7 +20,7 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
         filename = f"turbulence_{start_year}_{end_year - 1}.png"
     filepath = os.path.join(save_dir, filename)
     
-    plt.figure(figsize=(500, 10))
+    plt.figure(figsize=(35, 10))
 
     mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False)]
     sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False)]
@@ -29,9 +30,9 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
     sev_color = 'red'
     combined_color = 'orange'
 
-    plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.7, s=3)
-    plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.7, s=3)
-    plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=3)
+    plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.7, s=20)
+    plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.7, s=20)
+    plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=20)
 
     plt.xlabel("Date (UTC)")
     plt.ylabel("Flight Level (FL)")
@@ -47,9 +48,15 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
     plt.xlim(start_date, end_date)
     plt.ylim(0, 40000)
 
-    plt.xticks(all_dates, [date.strftime('%Y-%m-%d') for date in all_dates], rotation=90, fontsize=3)
+    '''plt.xticks(all_dates, [date.strftime('%Y-%m-%d') for date in all_dates], rotation=90, fontsize=3)
     plt.gca().xaxis.set_tick_params(width=1, length=4, direction='inout', grid_color='gray', grid_alpha=0.5)
-    if annotation_status:
+    '''
+    
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+
+
+    '''if annotation_status:
         grouped_by_date = chunk_df.groupby(chunk_df['valid'].dt.date).size()
 
         for date, count in grouped_by_date.items():
@@ -63,7 +70,7 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
                 ha='center', 
                 fontsize=4, 
                 color='blue', 
-                rotation=20)
+                rotation=20)'''
 
     plt.savefig(filepath, dpi=100, bbox_inches='tight')
     print(f"Saved plot: {filepath}")
