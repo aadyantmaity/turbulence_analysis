@@ -52,7 +52,7 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
     plt.gca().xaxis.set_tick_params(width=1, length=4, direction='inout', grid_color='gray', grid_alpha=0.5)
     '''
     
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 
 
