@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.dates as mdates
 
 def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, svg_status):
-    start_year, end_year = 2003, 2025
+    start_year, end_year = 2003, 2026
     chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]
         
     if chunk_df.empty:
@@ -52,7 +52,7 @@ def plot_turbulence_full_range(df, title_prefix, save_dir, annotation_status, sv
     plt.gca().xaxis.set_tick_params(width=1, length=4, direction='inout', grid_color='gray', grid_alpha=0.5)
     '''
     
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 
 

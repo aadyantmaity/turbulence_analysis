@@ -23,7 +23,7 @@ df, burbank_turbulence = preprocess_data(input_csv, output_csvs)
 #PLOTTING
 df['year'] = df['valid'].dt.year
 burbank_turbulence.loc[:,'year'] = burbank_turbulence['valid'].dt.year
-offshore_flow['valid'] = pd.to_datetime(offshore_flow['valid'])  # Convert to datetime
+offshore_flow['valid'] = pd.to_datetime(offshore_flow['valid'])
 offshore_flow['year'] = offshore_flow['valid'].dt.year
 
 min_year = df['year'].min()
@@ -95,14 +95,14 @@ if __name__ == "__main__":
     #svg plots
 
     #PLOT TURBULENCE DETAILED
-    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
-    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_svg, True)
-    plot_detailed_turbulence_general(offshore_flow, "Detailed Turbulence Reports - Offshore Flow", detailed_offshore_dir_svg, True)
+    #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
+    #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_svg, True)
+    #plot_detailed_turbulence_general(offshore_flow, "Detailed Turbulence Reports - Offshore Flow", detailed_offshore_dir_svg, True)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
-    plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_svg, True, True)
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
+    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_svg, True, True)
     
     #PLOT TURBULENCE FULL Range
     plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_svg, False, True)
@@ -112,16 +112,16 @@ if __name__ == "__main__":
     #png plots
 
     #PLOT TURBULENCE DETAILED
-    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_png, False)
-    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
-    plot_detailed_turbulence_general(offshore_flow, "Detailed Turbulence Reports - Offshore Flow", detailed_offshore_dir_png, False)
+    #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_png, False)
+    #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
+    #plot_detailed_turbulence_general(offshore_flow, "Detailed Turbulence Reports - Offshore Flow", detailed_offshore_dir_png, False)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
-    plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, True, False)
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
+    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, True, False)
 
     #PLOT TURBULENCE FULL Range
-    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png, False, False)
-    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_png, True, False)
-    plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_png, True, False)
+    #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png, False, False)
+    #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_png, True, False)
+    #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_png, True, False)
