@@ -92,7 +92,7 @@ if __name__ == "__main__":
     #svg plots
 
     #PLOT TURBULENCE DETAILED
-    plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
+    #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
     plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_svg, True)
     
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     #PLOT TURBULENCE DETAILED
     #plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_png, False)
-    #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
+    plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
     #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
