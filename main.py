@@ -14,14 +14,14 @@ for column in df.select_dtypes(include='object').columns:
 
 df['valid'] = pd.to_datetime(df['valid'], format='%Y%m%d%H%M', utc=True)
 df['fl'] = pd.to_numeric(df['fl'], errors='coerce').astype('Int64')
-#df["fl"] = (df["fl"] // 100).astype("Int64")
 df['lat'] = pd.to_numeric(df['lat'], errors='coerce')
 df['lon'] = pd.to_numeric(df['lon'], errors='coerce')
+fl_42000_or_above = df[df['fl'] >= 42000]
+
 df = df.dropna(subset=['fl'])
 df.replace("None", np.nan, inplace=True)
 df.drop_duplicates(inplace=True)
 df = df.drop(columns=['product_id', 'icing'])
-
 
 def extract_airports(report):
     if pd.isna(report):
@@ -39,6 +39,7 @@ burbank_turbulence_severe = df[df['report'].str.contains('BUR', na=False) & df['
 df.to_csv("preprocessed_dataset.csv", index=False)
 burbank_turbulence.to_csv("burbank_turbulence.csv", index=False)
 burbank_turbulence_severe.to_csv("burbank_turbulence_severe.csv", index=False)
+fl_42000_or_above.to_csv("fl_42000_or_above.csv", index=False)
 '''
 
 df['year'] = df['valid'].dt.year
@@ -88,17 +89,16 @@ if __name__ == "__main__":
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
     from turbulencefull import plot_turbulence_full_range
 
-    '''
     #svg plots
 
     #PLOT TURBULENCE DETAILED
     plot_detailed_turbulence_general(df, "Detailed Turbulence Reports", detailed_general_dir_svg, True)
     plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_svg, True)
-    '''
+    
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
     
 
     #PLOT TURBULENCE FULL Range
@@ -112,9 +112,10 @@ if __name__ == "__main__":
     #plot_detailed_turbulence_burbank(burbank_turbulence, "Detailed Turbulence Reports - Burbank (BUR)", detailed_burbank_dir_png, False)
 
     #PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
+    #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
+    #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
 
     #PLOT TURBULENCE FULL Range
     #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png, False, False)
     #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_png, True, False)
+

@@ -19,7 +19,7 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
             filename = f"turbulence_{start_year}_{end_year - 1}.png"
         filepath = os.path.join(save_dir, filename)
         
-        plt.figure(figsize=(150, 6))
+        plt.figure(figsize=(75, 6))
 
         mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False)]
         sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False)]
@@ -29,9 +29,9 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
         sev_color = 'red'
         combined_color = 'orange'
 
-        plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.7, s=3)
-        plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.7, s=3)
-        plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=3)
+        plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.7, s=10)
+        plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.7, s=10)
+        plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=10)
 
         plt.xlabel("Date (UTC)")
         plt.ylabel("Flight Level (FL)")
