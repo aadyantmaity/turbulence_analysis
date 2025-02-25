@@ -5,6 +5,7 @@ import re
 import matplotlib.pyplot as plt
 from config import year_chunks, year_chunks_general, year_chunks_3
 
+#PREPROCESSING
 df = pd.read_csv("pireps_200311300000_202502132359 (1).csv", low_memory=False)
 
 df.columns = df.columns.str.lower().str.replace(" ", "_")
@@ -17,6 +18,19 @@ df['fl'] = pd.to_numeric(df['fl'], errors='coerce').astype('Int64')
 df['lat'] = pd.to_numeric(df['lat'], errors='coerce')
 df['lon'] = pd.to_numeric(df['lon'], errors='coerce')
 fl_42000_or_above = df[df['fl'] >= 42000]
+
+def extract_fl(report):
+    if pd.isna(report):
+        return None
+    match = re.search(r'/FL(\d+)', report)
+    if match:
+        return int(match.group(1))
+    return None
+
+df['fl_extracted'] = df['report'].apply(extract_fl)
+df.loc[df['fl'] >= 42000, 'fl'] = df['fl_extracted']
+
+df.drop(columns=['fl_extracted'], inplace=True)
 
 df = df.dropna(subset=['fl'])
 df.replace("None", np.nan, inplace=True)
@@ -35,12 +49,14 @@ num_unique_airports = len(unique_airports)
 burbank_turbulence = df[df['report'].str.contains('BUR', na=False) & df['turbulence'].str.contains('MOD|SEV', na=False)]
 burbank_turbulence_severe = df[df['report'].str.contains('BUR', na=False) & df['turbulence'].str.contains('SEV', na=False)]
 
-'''
+
 df.to_csv("preprocessed_dataset.csv", index=False)
 burbank_turbulence.to_csv("burbank_turbulence.csv", index=False)
 burbank_turbulence_severe.to_csv("burbank_turbulence_severe.csv", index=False)
 fl_42000_or_above.to_csv("fl_42000_or_above.csv", index=False)
-'''
+
+#--------------------------------------------------------------------------------------------------------------#
+#PLOTTING
 
 df['year'] = df['valid'].dt.year
 burbank_turbulence.loc[:,'year'] = burbank_turbulence['valid'].dt.year
