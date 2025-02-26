@@ -29,14 +29,19 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
         sev_color = 'red'
         combined_color = 'orange'
 
-        plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.7, s=40)
-        plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.7, s=40)
-        plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=40)
+        grouped_by_date = chunk_df.groupby(chunk_df['valid'].dt.date).size()
+        for date, count in grouped_by_date.items():
+            daily_mod_turbulence = mod_turbulence[mod_turbulence['valid'].dt.date == date]
+            daily_sev_turbulence = sev_turbulence[sev_turbulence['valid'].dt.date == date]
+            daily_combined_turbulence = combined_turbulence[combined_turbulence['valid'].dt.date == date]
+
+            plt.scatter(daily_mod_turbulence['valid'], daily_mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.4, s=15 * count)
+            plt.scatter(daily_sev_turbulence['valid'], daily_sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.4, s=15 * count)
+            plt.scatter(daily_combined_turbulence['valid'], daily_combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.4, s=15 * count)
 
         plt.xlabel("Date (UTC)")
         plt.ylabel("Flight Level (FL)")
         plt.title(title)
-        plt.legend()
         plt.grid(True)
 
         plt.ylim(0, 40000)
@@ -45,31 +50,11 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
         end_date = chunk_df['valid'].max()
         total_days = (end_date - start_date).days + 1
 
-        '''plt.gca().set_xticklabels([])
-        plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True, prune='lower', nbins=total_days))
-        plt.gca().xaxis.set_tick_params(width=1, length=4, direction='inout', grid_color='gray', grid_alpha=0.5)'''
-
         plt.gca().xaxis.set_major_locator(mdates.MonthLocator()) 
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 
         plt.xticks(rotation=45, ha='right')
 
-        grouped_by_date = chunk_df.groupby(chunk_df['valid'].dt.date).size()
-
-        for date, count in grouped_by_date.items():
-            first_occurrence = chunk_df[chunk_df['valid'].dt.date == date].iloc[0]
-            if first_occurrence['fl'] is not None:
-                annotation_text = first_occurrence['valid'].strftime('%m-%d')
-                if count > 1:
-                    annotation_text += f" ({count})"
-                plt.annotate(annotation_text, 
-                 (first_occurrence['valid'], first_occurrence['fl']),
-                 ha='center', 
-                 fontsize=4, 
-                 color='blue', 
-                 rotation=20)
-
-    
         plt.savefig(filepath, dpi=150, bbox_inches='tight')
         print(f"Saved plot: {filepath}")
         plt.close()

@@ -102,12 +102,12 @@ if __name__ == "__main__":
     #PLOT TURBULENCE 3 YEAR CHUNKS
     #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_svg, False, True)
     #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_svg, True, True)
-    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_svg, True, True)
+    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_svg, False, True)
     
     #PLOT TURBULENCE FULL Range
-    plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_svg, False, True)
-    plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_svg, True, True)
-    plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_svg, True, True)
+    #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_svg, False, True)
+    #plot_turbulence_full_range(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_full_dir_svg, True, True)
+    #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_svg, True, True)
 
     #png plots
 
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     #PLOT TURBULENCE 3 YEAR CHUNKS
     #plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False, False)
     #plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True, False)
-    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, True, False)
+    #plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, False, False)
 
     #PLOT TURBULENCE FULL Range
     #plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png, False, False)
