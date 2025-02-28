@@ -31,31 +31,59 @@ def plot_turbulence_on_map(df, title_prefix, save_dir, svg_status):
     m.fillcontinents(color='white', lake_color='aqua')
     m.shadedrelief()
 
-    mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains(
-        'MOD', na=False)]
-    sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains(
-        'SEV', na=False)]
-    combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains(
-        'MOD-SEV', na=False)]
+    smooth = chunk_df[
+            chunk_df['turbulence'].str.contains('SM|SMOOTH', na=False) |
+            chunk_df['report'].str.contains('SM|SMOOTH', na=False)
+        ]
+    light_turbulence = chunk_df[
+        chunk_df['turbulence'].str.contains('LGT|LIGHT', na=False) |
+        chunk_df['report'].str.contains('LGT|LIGHT', na=False)
+    ]
+    moderate_turbulence = chunk_df[
+        chunk_df['turbulence'].str.contains('MOD', na=False) |
+        chunk_df['report'].str.contains('MOD', na=False)
+    ]
+    modsev_turbulence = chunk_df[
+        chunk_df['turbulence'].str.contains('MOD-SEV', na=False) |
+        chunk_df['report'].str.contains('MOD-SEV', na=False)
+    ]
+    severe_turbulence = chunk_df[
+        chunk_df['turbulence'].str.contains('SEV', na=False) |
+        chunk_df['report'].str.contains('SEV', na=False)
+    ]
 
-    mod_color = 'green'
-    sev_color = 'red'
-    combined_color = 'orange'
+    smooth_color = 'lightsteelblue'
+    light_color = 'green'
+    moderate_color = 'yellow'
+    modsev_color = 'orange'
+    severe_color = 'red'
 
     dot_size = 50
+    alpha_value = 0.5
 
-    x, y = m(mod_turbulence['lon'].values, mod_turbulence['lat'].values)
-    m.scatter(x, y, color=mod_color,
-              label='Moderate Turbulence (MOD)', alpha=0.7, s=dot_size)
+    x, y = m(smooth['lon'].values, smooth['lat'].values)
+    m.scatter(x, y, color=smooth_color,
+                label='Smooth Conditions (SM | SMOOTH)', alpha=alpha_value, s=dot_size)
 
-    x, y = m(sev_turbulence['lon'].values, sev_turbulence['lat'].values)
-    m.scatter(x, y, color=sev_color,
-              label='Severe Turbulence (SEV)', alpha=0.7, s=dot_size)
+    x, y = m(light_turbulence['lon'].values,
+                light_turbulence['lat'].values)
+    m.scatter(x, y, color=light_color,
+                label='Light Turbulence (LGT)', alpha=alpha_value, s=dot_size)
 
-    x, y = m(combined_turbulence['lon'].values,
-             combined_turbulence['lat'].values)
-    m.scatter(x, y, color=combined_color,
-              label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=dot_size)
+    x, y = m(moderate_turbulence['lon'].values,
+                moderate_turbulence['lat'].values)
+    m.scatter(x, y, color=moderate_color,
+                label='Moderate Turbulence (MOD)', alpha=alpha_value, s=dot_size)
+
+    x, y = m(modsev_turbulence['lon'].values,
+                modsev_turbulence['lat'].values)
+    m.scatter(x, y, color=modsev_color,
+                label='Moderate-Severe Turbulence (MOD)', alpha=alpha_value, s=dot_size)
+
+    x, y = m(severe_turbulence['lon'].values,
+                severe_turbulence['lat'].values)
+    m.scatter(x, y, color=severe_color,
+                label='Severe Turbulence (SEV)', alpha=alpha_value, s=dot_size)
 
     airports = chunk_df['report'].str[:3].unique()
     airport_coords = {
