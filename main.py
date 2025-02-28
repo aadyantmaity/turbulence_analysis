@@ -6,15 +6,14 @@ import matplotlib.pyplot as plt
 from config import year_chunks, year_chunks_general, year_chunks_3
 from preprocessing import preprocess_data
 from santaana import offshoreFilter
-from spatialturbulence import plot_turbulence_on_map
 
 #PREPROCESSING
 input_csv = "pireps_200311300000_202502132359 (1).csv"
 output_csvs = {
-    'preprocessed': "preprocessed_dataset.csv",
-    'burbank_turbulence': "burbank_turbulence.csv",
-    'burbank_turbulence_severe': "burbank_turbulence_severe.csv",
-    'fl_42000_or_above': "fl_42000_or_above.csv"
+    'preprocessed': "data_csv_files/preprocessed_dataset.csv",
+    'burbank_turbulence': "data_csv_files/burbank_turbulence.csv",
+    'burbank_turbulence_severe': "data_csv_files/burbank_turbulence_severe.csv",
+    'fl_42000_or_above': "data_csv_files/fl_42000_or_above.csv"
 }
 
 offshore_flow = offshoreFilter()
@@ -96,6 +95,7 @@ if __name__ == "__main__":
     from turbulencedetailedburbank import plot_detailed_turbulence_burbank
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
     from turbulencefull import plot_turbulence_full_range
+    from spatialturbulence import plot_turbulence_on_map, plot_turbulence_for_dec30_to_jan8
 
     #svg plots
 
@@ -115,7 +115,10 @@ if __name__ == "__main__":
     #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_svg, True, True)
 
     #PLOT TURBULENCE ON MAP
-    plot_turbulence_on_map(df, "Turbulence Reports", output_dir_svg_spatial, True)
+    #plot_turbulence_on_map(df, "Turbulence Reports", output_dir_svg_spatial, True)
+
+    #PLOT TURBULENCE FOR DEC 30 to JAN 8
+    plot_turbulence_for_dec30_to_jan8(df, "Turbulence Reports", output_dir_svg_spatial, True)
 
     #png plots
 
@@ -135,4 +138,7 @@ if __name__ == "__main__":
     #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_png, True, False)
 
     #PLOT TURBULENCE ON MAP
-    plot_turbulence_on_map(df, "Turbulence Reports", output_dir_png_spatial, False)
+    #plot_turbulence_on_map(df, "Turbulence Reports", output_dir_png_spatial, False)
+
+    #PLOT TURBULENCE FOR JAN 6 TO JAN 8
+    plot_turbulence_for_dec30_to_jan8(df, "Turbulence Reports", output_dir_png_spatial, False)

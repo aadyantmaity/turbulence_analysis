@@ -1,8 +1,8 @@
 import pandas as pd
 
 def offshoreFilter():
-    turbulence_data = pd.read_csv('/Users/aadyant/Desktop/turbulence_analysis/burbank_turbulence.csv')
-    burbank_data = pd.read_csv('/Users/aadyant/Desktop/turbulence_analysis/Burbank Data.csv')
+    turbulence_data = pd.read_csv('/Users/aadyant/Desktop/turbulence_analysis/data_csv_files/burbank_turbulence.csv')
+    burbank_data = pd.read_csv('/Users/aadyant/Desktop/turbulence_analysis/data_csv_files/Burbank Data.csv')
     
     burbank_data.columns = burbank_data.columns.str.strip()
     
