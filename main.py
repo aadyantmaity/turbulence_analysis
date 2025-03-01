@@ -115,7 +115,7 @@ if __name__ == "__main__":
     #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_svg, True, True)
 
     #PLOT TURBULENCE ON MAP
-    plot_turbulence_on_map(df, "Turbulence Reports", output_dir_svg_spatial, True)
+    #plot_turbulence_on_map(df, "Turbulence Reports", output_dir_svg_spatial, True)
 
     #PLOT TURBULENCE FOR DEC 30 to JAN 8
     plot_turbulence_for_dec30_to_jan8(df, "Turbulence Reports", output_dir_svg_spatial, True)
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     #plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_png, True, False)
 
     #PLOT TURBULENCE ON MAP
-    plot_turbulence_on_map(df, "Turbulence Reports", output_dir_png_spatial, False)
+    #plot_turbulence_on_map(df, "Turbulence Reports", output_dir_png_spatial, False)
 
-    #PLOT TURBULENCE FOR JAN 6 TO JAN 8
+    #PLOT TURBULENCE FOR DEC 30 TO JAN 8
     plot_turbulence_for_dec30_to_jan8(df, "Turbulence Reports", output_dir_png_spatial, False)

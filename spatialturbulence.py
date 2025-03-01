@@ -4,7 +4,6 @@ import pandas as pd
 from mpl_toolkits.basemap import Basemap
 import numpy as np
 
-
 def plot_turbulence_on_map(df, title_prefix, save_dir, svg_status):
     start_year, end_year = 2003, 2026
     chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]
@@ -59,7 +58,7 @@ def plot_turbulence_on_map(df, title_prefix, save_dir, svg_status):
     severe_color = 'red'
 
     dot_size = 50
-    alpha_value = 0.5
+    alpha_value = 0.7
 
     x, y = m(smooth['lon'].values, smooth['lat'].values)
     m.scatter(x, y, color=smooth_color,
@@ -106,7 +105,6 @@ def plot_turbulence_on_map(df, title_prefix, save_dir, svg_status):
     plt.savefig(filepath, dpi=100, bbox_inches='tight')
     print(f"Saved plot: {filepath}")
     plt.close()
-
 
 def plot_turbulence_for_dec30_to_jan8(df, title_prefix, save_dir, svg_status):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
@@ -164,7 +162,7 @@ def plot_turbulence_for_dec30_to_jan8(df, title_prefix, save_dir, svg_status):
         severe_color = 'red'
 
         dot_size = 50
-        alpha_value = 0.5
+        alpha_value = 0.7
 
         x, y = m(smooth['lon'].values, smooth['lat'].values)
         m.scatter(x, y, color=smooth_color,
@@ -260,12 +258,12 @@ def plot_turbulence_for_dec30_to_jan8(df, title_prefix, save_dir, svg_status):
 
         smooth_color = 'lightsteelblue'
         light_color = 'green'
-        moderate_color = 'yellow'
+        moderate_color = 'gold'
         modsev_color = 'orange'
         severe_color = 'red'
 
         dot_size = 50
-        alpha_value = 0.3
+        alpha_value = 0.7
 
         x, y = m(smooth['lon'].values, smooth['lat'].values)
         m.scatter(x, y, color=smooth_color,
