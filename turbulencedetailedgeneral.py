@@ -21,9 +21,9 @@ def plot_detailed_turbulence_general(df, title_prefix, save_dir, svg_status):
 
         plt.figure(figsize=(25, 10))
 
-        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False)]
-        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False)]
-        combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD-SEV', na=False)]
+        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False) | chunk_df['report'].str.contains('MOD', na=False)]
+        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False) | chunk_df['report'].str.contains('SEV | SEVERE', na=False)]
+        combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD-SEV', na=False) | chunk_df['report'].str.contains('MOD-SEV', na=False)]
 
         mod_color = 'green'
         sev_color = 'red'

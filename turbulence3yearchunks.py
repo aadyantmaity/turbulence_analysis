@@ -22,9 +22,9 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
         
         plt.figure(figsize=(25, 10))
 
-        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False)]
-        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False)]
-        combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD-SEV', na=False)]
+        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False) | chunk_df['report'].str.contains('MOD', na=False)]
+        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False) | chunk_df['report'].str.contains('SEV | SEVERE', na=False)]
+        combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD-SEV', na=False) | chunk_df['report'].str.contains('MOD-SEV', na=False)]
 
         mod_color = 'green'
         sev_color = 'red'

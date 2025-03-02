@@ -151,8 +151,8 @@ def plot_turbulence_for_dec30_to_jan8(df, title_prefix, save_dir, svg_status):
             chunk_df_jan6_jan8['report'].str.contains('MOD-SEV', na=False)
         ]
         severe_turbulence = chunk_df_jan6_jan8[
-            chunk_df_jan6_jan8['turbulence'].str.contains('SEV', na=False) |
-            chunk_df_jan6_jan8['report'].str.contains('SEV', na=False)
+            chunk_df_jan6_jan8['turbulence'].str.contains('SEV | SEVERE', na=False) |
+            chunk_df_jan6_jan8['report'].str.contains('SEV | SEVERE', na=False)
         ]
 
         smooth_color = 'lightsteelblue'
