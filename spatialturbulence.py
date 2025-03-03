@@ -46,16 +46,20 @@ def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
         gmap.scatter(modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50, label='')
         gmap.scatter(severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50, label='')
 
+        airports = df['report'].dropna().str.extract(r'\b(K?[A-Z]{3})\b')[0].unique()
         airport_coords = {
             'LAX': (33.9416, -118.4085),
             'BUR': (34.2007, -118.3581),
             'LGB': (33.8177, -118.1516),
             'EMT': (34.086, -118.035),
+            'VNY': (34.21073, -118.48985),
+            'SMO': (34.01582, -118.45131),
         }
 
         for airport, (lat, lon) in airport_coords.items():
-            if airport in chunk_df_jan6_jan9['report'].str[:3].unique():
+            if airport in airports:
                 gmap.marker(lat, lon, color='cyan', label=airport)
+
 
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
@@ -116,7 +120,6 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
 
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
-        print(light_turbulence)
 
 def plot_turbulence_for_dec30_to_jan9(df, title_prefix, save_dir, svg_status):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
