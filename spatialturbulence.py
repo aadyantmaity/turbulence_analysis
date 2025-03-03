@@ -14,18 +14,33 @@ def plot_turbulence_for_dec30_to_jan9_google_maps(df, title_prefix, save_dir):
     if not chunk_df_jan6_jan9.empty:
         title = f"{title_prefix} Jan 6 - Jan 9"
 
-        filename = "turbulence_map_jan6_jan9.html"  # Google Maps API generates HTML maps
+        filename = "turbulence_map_jan6_jan9.html"
         filepath = os.path.join(save_dir, filename)
 
         gmap = gmplot.GoogleMapPlotter.from_geocode("Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME")
 
-        smooth = chunk_df_jan6_jan9[chunk_df_jan6_jan9['turbulence'].str.contains('SM|SMOOTH', na=False)]
-        light_turbulence = chunk_df_jan6_jan9[chunk_df_jan6_jan9['turbulence'].str.contains('LGT|LIGHT', na=False)]
-        moderate_turbulence = chunk_df_jan6_jan9[chunk_df_jan6_jan9['turbulence'].str.contains('MOD', na=False)]
-        modsev_turbulence = chunk_df_jan6_jan9[chunk_df_jan6_jan9['turbulence'].str.contains('MOD-SEV', na=False)]
-        severe_turbulence = chunk_df_jan6_jan9[chunk_df_jan6_jan9['turbulence'].str.contains('SEV | SEVERE', na=False)]
+        smooth = chunk_df_jan6_jan9[
+            chunk_df_jan6_jan9['turbulence'].str.contains('SM|SMOOTH', na=False) |
+            chunk_df_jan6_jan9['report'].str.contains('SM|SMOOTH', na=False)
+        ]
+        light_turbulence = chunk_df_jan6_jan9[
+            chunk_df_jan6_jan9['turbulence'].str.contains('LGT|LIGHT', na=False) |
+            chunk_df_jan6_jan9['report'].str.contains('LGT|LIGHT', na=False)
+        ]
+        moderate_turbulence = chunk_df_jan6_jan9[
+            chunk_df_jan6_jan9['turbulence'].str.contains('MOD', na=False) |
+            chunk_df_jan6_jan9['report'].str.contains('MOD', na=False)
+        ]
+        modsev_turbulence = chunk_df_jan6_jan9[
+            chunk_df_jan6_jan9['turbulence'].str.contains('MOD-SEV', na=False) |
+            chunk_df_jan6_jan9['report'].str.contains('MOD-SEV', na=False)
+        ]
+        severe_turbulence = chunk_df_jan6_jan9[
+            chunk_df_jan6_jan9['turbulence'].str.contains('SEV | SEVERE', na=False) |
+            chunk_df_jan6_jan9['report'].str.contains('SEV | SEVERE', na=False)
+        ]
 
-        gmap.scatter(smooth['lat'], smooth['lon'], color='blue', size=50, label='')
+        gmap.scatter(smooth['lat'], smooth['lon'], color='gray', size=50, label='')
         gmap.scatter(light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
         gmap.scatter(moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50, label='')
         gmap.scatter(modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50, label='')
