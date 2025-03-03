@@ -95,7 +95,7 @@ if __name__ == "__main__":
     from turbulencedetailedburbank import plot_detailed_turbulence_burbank
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
     from turbulencefull import plot_turbulence_full_range
-    from spatialturbulence import plot_turbulence_for_dec30_to_jan9, plot_turbulence_for_dec30_to_jan9_google_maps
+    from spatialturbulence import plot_turbulence_for_dec30_to_jan9, plot_turbulence_for_jan6_to_jan9_google_maps, plot_turbulence_for_dec30_to_jan5_google_maps
 
     #svg plots
 
@@ -116,7 +116,8 @@ if __name__ == "__main__":
 
     #PLOT TURBULENCE FOR DEC 30 to JAN 9
     #plot_turbulence_for_dec30_to_jan9(df, "Turbulence Reports", output_dir_svg_spatial, True)
-    plot_turbulence_for_dec30_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial)
+    plot_turbulence_for_jan6_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial)
+    plot_turbulence_for_dec30_to_jan5_google_maps(df, "Turbulence Reports", output_dir_svg_spatial)
 
     #png plots
 

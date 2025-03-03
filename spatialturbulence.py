@@ -4,7 +4,7 @@ import pandas as pd
 from mpl_toolkits.basemap import Basemap
 import gmplot
 
-def plot_turbulence_for_dec30_to_jan9_google_maps(df, title_prefix, save_dir):
+def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
     start_date = pd.Timestamp('2025-01-06')
@@ -59,6 +59,64 @@ def plot_turbulence_for_dec30_to_jan9_google_maps(df, title_prefix, save_dir):
 
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
+        
+def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
+    df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
+
+    start_date = pd.Timestamp('2024-12-30')
+    end_date = pd.Timestamp('2025-01-05 23:59:59')
+    chunk_df_dec30_jan5 = df[(df['valid'] >= start_date)
+                             & (df['valid'] <= end_date)]
+
+    if not chunk_df_dec30_jan5.empty:
+        title = f"{title_prefix} Dec 30 - Jan 5"
+
+        filename = "turbulence_map_dec30_jan5.html"
+        filepath = os.path.join(save_dir, filename)
+
+        gmap = gmplot.GoogleMapPlotter.from_geocode("Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME")
+
+        smooth = chunk_df_dec30_jan5[
+            chunk_df_dec30_jan5['turbulence'].str.contains('SM|SMOOTH', na=False) |
+            chunk_df_dec30_jan5['report'].str.contains('SM|SMOOTH', na=False)
+        ]
+        light_turbulence = chunk_df_dec30_jan5[
+            chunk_df_dec30_jan5['turbulence'].str.contains('LGT|LIGHT', na=False) |
+            chunk_df_dec30_jan5['report'].str.contains('LGT|LIGHT', na=False)
+        ]
+        moderate_turbulence = chunk_df_dec30_jan5[
+            chunk_df_dec30_jan5['turbulence'].str.contains('MOD', na=False) |
+            chunk_df_dec30_jan5['report'].str.contains('MOD', na=False)
+        ]
+        modsev_turbulence = chunk_df_dec30_jan5[
+            chunk_df_dec30_jan5['turbulence'].str.contains('MOD-SEV', na=False) |
+            chunk_df_dec30_jan5['report'].str.contains('MOD-SEV', na=False)
+        ]
+        severe_turbulence = chunk_df_dec30_jan5[
+            chunk_df_dec30_jan5['turbulence'].str.contains('SEV | SEVERE', na=False) |
+            chunk_df_dec30_jan5['report'].str.contains('SEV | SEVERE', na=False)
+        ]
+
+        gmap.scatter(smooth['lat'], smooth['lon'], color='gray', size=50, label='')
+        gmap.scatter(light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
+        gmap.scatter(moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50, label='')
+        gmap.scatter(modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50, label='')
+        gmap.scatter(severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50, label='')
+
+        airport_coords = {
+            'LAX': (33.9416, -118.4085),
+            'BUR': (34.2007, -118.3581),
+            'LGB': (33.8177, -118.1516),
+            'EMT': (34.086, -118.035),
+        }
+
+        for airport, (lat, lon) in airport_coords.items():
+            if airport in chunk_df_dec30_jan5['report'].str[:3].unique():
+                gmap.marker(lat, lon, color='cyan', label=airport)
+
+        gmap.draw(filepath)
+        print(f"Saved plot: {filepath}")
+        print(light_turbulence)
 
 def plot_turbulence_for_dec30_to_jan9(df, title_prefix, save_dir, svg_status):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
