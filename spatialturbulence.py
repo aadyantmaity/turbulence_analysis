@@ -192,11 +192,6 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
 
-
-import pandas as pd
-import os
-import gmplot
-
 def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
     
