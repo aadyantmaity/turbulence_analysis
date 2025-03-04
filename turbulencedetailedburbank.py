@@ -4,13 +4,14 @@ import os
 from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates
 
+
 def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
     for start_year in year_chunks_general:
         end_year = start_year + 1
         chunk_df = df[(df['year'] >= start_year) & (df['year'] <= end_year)]
-        
+
         if chunk_df.empty:
-            continue  
+            continue
 
         title = f"{title_prefix} {start_year}-{end_year}"
         if svg_status:
@@ -21,9 +22,29 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
 
         plt.figure(figsize=(25, 10))
 
-        mod_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD', na=False) | chunk_df['report'].str.contains('MOD', na=False)]
-        sev_turbulence = chunk_df[chunk_df['turbulence'].str.contains('SEV', na=False) | chunk_df['report'].str.contains('SEV | SEVERE', na=False)]
-        combined_turbulence = chunk_df[chunk_df['turbulence'].str.contains('MOD-SEV', na=False) | chunk_df['report'].str.contains('MOD-SEV', na=False)]
+        combined_turbulence = chunk_df[
+            (chunk_df['turbulence'].str.contains(r'\bMOD-SEV\b', na=False) |
+             chunk_df['report'].str.contains(r'\bMOD-SEV\b', na=False))
+        ]
+
+        sev_turbulence = chunk_df[
+            ~chunk_df.index.isin(combined_turbulence.index) &
+            (chunk_df['turbulence'].str.contains(r'\bSEVERE\b|\bSEV\b', na=False) |
+             chunk_df['report'].str.contains(r'\bSEVERE\b|\bSEV\b', na=False))
+        ]
+
+        combined_turbulence = chunk_df[
+            ~chunk_df.index.isin(sev_turbulence.index) &
+            (chunk_df['turbulence'].str.contains(r'\bMOD-SEV\b', na=False) |
+             chunk_df['report'].str.contains(r'\bMOD-SEV\b', na=False))
+        ]
+
+        mod_turbulence = chunk_df[
+            ~chunk_df.index.isin(sev_turbulence.index) &
+            ~chunk_df.index.isin(combined_turbulence.index) &
+            (chunk_df['turbulence'].str.contains(r'\bMOD\b', na=False) |
+             chunk_df['report'].str.contains(r'\bMOD\b', na=False))
+        ]
 
         mod_color = 'green'
         sev_color = 'red'
@@ -35,9 +56,12 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
             daily_sev_turbulence = sev_turbulence[sev_turbulence['valid'].dt.date == date]
             daily_combined_turbulence = combined_turbulence[combined_turbulence['valid'].dt.date == date]
 
-            plt.scatter(daily_mod_turbulence['valid'], daily_mod_turbulence['fl'], color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.4, s=15 * count)
-            plt.scatter(daily_sev_turbulence['valid'], daily_sev_turbulence['fl'], color=sev_color, label='Severe Turbulence (SEV)', alpha=0.4, s=15 * count)
-            plt.scatter(daily_combined_turbulence['valid'], daily_combined_turbulence['fl'], color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.4, s=15 * count)
+            plt.scatter(daily_mod_turbulence['valid'], daily_mod_turbulence['fl'],
+                        color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.4, s=15 * count)
+            plt.scatter(daily_sev_turbulence['valid'], daily_sev_turbulence['fl'],
+                        color=sev_color, label='Severe Turbulence (SEV)', alpha=0.4, s=15 * count)
+            plt.scatter(daily_combined_turbulence['valid'], daily_combined_turbulence['fl'],
+                        color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.4, s=15 * count)
 
         plt.xlabel("Date (UTC)")
         plt.ylabel("Flight Level (FL)")
@@ -50,7 +74,7 @@ def plot_detailed_turbulence_burbank(df, title_prefix, save_dir, svg_status):
         end_date = chunk_df['valid'].max()
         total_days = (end_date - start_date).days + 1
 
-        plt.gca().xaxis.set_major_locator(mdates.MonthLocator()) 
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
 
         plt.xticks(rotation=45, ha='right')
