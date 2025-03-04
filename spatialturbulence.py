@@ -193,6 +193,10 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
         print(f"Saved plot: {filepath}")
 
 
+import pandas as pd
+import os
+import gmplot
+
 def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
     
@@ -201,9 +205,12 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
     chunk_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
     
     altitude_ranges = {
-        "low": (0, 10000),
-        "medium": (10001, 30000),
-        "high": (30001, float('inf'))
+        "0-2000 ft": (0, 2000),
+        "2000-4000 ft": (2000, 4000),
+        "4000-6000 ft": (4000, 6000),
+        "6000-8000 ft": (6000, 8000),
+        "8000-12000 ft": (8000, 12000),
+        "12000-20000 ft": (12000, 20000)
     }
     
     if chunk_df.empty:
@@ -216,8 +223,8 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
         if altitude_df.empty:
             continue
         
-        title = f"{title_prefix} {alt_label.capitalize()} Altitude (Jan 6 - Jan 9)"
-        filename = f"turbulence_map_{alt_label}_altitude_jan6_jan9.html"
+        title = f"{title_prefix} {alt_label} (Jan 6 - Jan 9)"
+        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_jan6_jan9.html"
         filepath = os.path.join(save_dir, filename)
         
         gmap = gmplot.GoogleMapPlotter.from_geocode(
@@ -245,6 +252,7 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
 
+
 def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
     
@@ -253,9 +261,12 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
     chunk_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
     
     altitude_ranges = {
-        "low": (0, 10000),
-        "medium": (10001, 30000),
-        "high": (30001, float('inf'))
+        "0-2000 ft": (0, 2000),
+        "2000-4000 ft": (2000, 4000),
+        "4000-6000 ft": (4000, 6000),
+        "6000-8000 ft": (6000, 8000),
+        "8000-12000 ft": (8000, 12000),
+        "12000-20000 ft": (12000, 20000)
     }
     
     if chunk_df.empty:
@@ -268,8 +279,8 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         if altitude_df.empty:
             continue
         
-        title = f"{title_prefix} {alt_label.capitalize()} Altitude (Dec 30 - Jan 5)"
-        filename = f"turbulence_map_{alt_label}_altitude_dec30_jan5.html"
+        title = f"{title_prefix} {alt_label} (Dec 30 - Jan 5)"
+        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_dec30_jan5.html"
         filepath = os.path.join(save_dir, filename)
         
         gmap = gmplot.GoogleMapPlotter.from_geocode(
