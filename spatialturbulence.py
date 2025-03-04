@@ -4,7 +4,6 @@ import pandas as pd
 from mpl_toolkits.basemap import Basemap
 import gmplot
 
-
 def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
@@ -72,7 +71,7 @@ def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
         ]
 
         gmap.scatter(smooth['lat'], smooth['lon'], color='gray', size=50)
-        gmap.scatter(no_data['lat'], no_data['lon'], color='white', size=50)
+        gmap.scatter(no_data['lat'], no_data['lon'], color='gray', size=50)
         gmap.scatter(
             light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
         gmap.scatter(
@@ -99,10 +98,6 @@ def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
 
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
-
-        chunk_df_jan6_jan9[['report', 'turbulence']].to_csv(
-            os.path.join(save_dir, "turbulence_data_jan6_jan9.csv"), index=False)
-
 
 def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
@@ -173,7 +168,7 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
         gmap.scatter(smooth['lat'], smooth['lon'],
                      color='gray', size=50, label='')
         gmap.scatter(no_data['lat'], no_data['lon'],
-                     color='white', size=50, label='')
+                     color='gray', size=50, label='')
         gmap.scatter(
             light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
         gmap.scatter(
@@ -197,5 +192,107 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
 
-        chunk_df_dec30_jan5[['report', 'turbulence']].to_csv(
-            os.path.join(save_dir, "turbulence_data_dec30_jan5.csv"), index=False)
+
+def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save_dir):
+    df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
+    
+    start_date = pd.Timestamp('2025-01-06')
+    end_date = pd.Timestamp('2025-01-09 23:59:59')
+    chunk_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
+    
+    altitude_ranges = {
+        "low": (0, 10000),
+        "medium": (10001, 30000),
+        "high": (30001, float('inf'))
+    }
+    
+    if chunk_df.empty:
+        print("No data available for the given time range.")
+        return
+    
+    for alt_label, (alt_min, alt_max) in altitude_ranges.items():
+        altitude_df = chunk_df[(chunk_df['fl'] >= alt_min) & (chunk_df['fl'] <= alt_max)]
+        
+        if altitude_df.empty:
+            continue
+        
+        title = f"{title_prefix} {alt_label.capitalize()} Altitude (Jan 6 - Jan 9)"
+        filename = f"turbulence_map_{alt_label}_altitude_jan6_jan9.html"
+        filepath = os.path.join(save_dir, filename)
+        
+        gmap = gmplot.GoogleMapPlotter.from_geocode(
+            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME"
+        )
+        
+        severity_categories = {
+            "severe": ("red", [r'\bSEVERE\b', r'\bSEV\b']),
+            "mod-sev": ("orange", [r'\bMOD-SEV\b']),
+            "moderate": ("yellow", [r'\bMOD\b']),
+            "light": ("green", [r'\bLGT\b', r'\bLIGHT\b']),
+            "smooth": ("gray", [r'\bSM\b', r'\bSMOOTH\b'])
+        }
+        
+        plotted_indices = set()
+        for severity, (color, patterns) in severity_categories.items():
+            severity_df = altitude_df[~altitude_df.index.isin(plotted_indices) & 
+                                      altitude_df['turbulence'].str.contains('|'.join(patterns), na=False)]
+            plotted_indices.update(severity_df.index)
+            gmap.scatter(severity_df['lat'], severity_df['lon'], color=color, size=50)
+        
+        no_data_df = altitude_df[~altitude_df.index.isin(plotted_indices)]
+        gmap.scatter(no_data_df['lat'], no_data_df['lon'], color='gray', size=50)
+        
+        gmap.draw(filepath)
+        print(f"Saved plot: {filepath}")
+
+def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, save_dir):
+    df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
+    
+    start_date = pd.Timestamp('2024-12-30')
+    end_date = pd.Timestamp('2025-01-05 23:59:59')
+    chunk_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
+    
+    altitude_ranges = {
+        "low": (0, 10000),
+        "medium": (10001, 30000),
+        "high": (30001, float('inf'))
+    }
+    
+    if chunk_df.empty:
+        print("No data available for the given time range.")
+        return
+    
+    for alt_label, (alt_min, alt_max) in altitude_ranges.items():
+        altitude_df = chunk_df[(chunk_df['fl'] >= alt_min) & (chunk_df['fl'] <= alt_max)]
+        
+        if altitude_df.empty:
+            continue
+        
+        title = f"{title_prefix} {alt_label.capitalize()} Altitude (Dec 30 - Jan 5)"
+        filename = f"turbulence_map_{alt_label}_altitude_dec30_jan5.html"
+        filepath = os.path.join(save_dir, filename)
+        
+        gmap = gmplot.GoogleMapPlotter.from_geocode(
+            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME"
+        )
+        
+        severity_categories = {
+            "severe": ("red", [r'\bSEVERE\b', r'\bSEV\b']),
+            "mod-sev": ("orange", [r'\bMOD-SEV\b']),
+            "moderate": ("yellow", [r'\bMOD\b']),
+            "light": ("green", [r'\bLGT\b', r'\bLIGHT\b']),
+            "smooth": ("gray", [r'\bSM\b', r'\bSMOOTH\b'])
+        }
+        
+        plotted_indices = set()
+        for severity, (color, patterns) in severity_categories.items():
+            severity_df = altitude_df[~altitude_df.index.isin(plotted_indices) & 
+                                      altitude_df['turbulence'].str.contains('|'.join(patterns), na=False)]
+            plotted_indices.update(severity_df.index)
+            gmap.scatter(severity_df['lat'], severity_df['lon'], color=color, size=50)
+        
+        no_data_df = altitude_df[~altitude_df.index.isin(plotted_indices)]
+        gmap.scatter(no_data_df['lat'], no_data_df['lon'], color='gray', size=50)
+        
+        gmap.draw(filepath)
+        print(f"Saved plot: {filepath}")
