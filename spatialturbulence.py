@@ -272,7 +272,7 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         altitude_df = chunk_df[(chunk_df['fl'] >= alt_min) & (chunk_df['fl'] <= alt_max)]
         
         if altitude_df.empty:
-            continue
+            print("Empty")
         
         title = f"{title_prefix} {alt_label} (Dec 30 - Jan 5)"
         filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_dec30_jan5.html"
