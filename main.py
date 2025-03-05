@@ -99,7 +99,7 @@ if __name__ == "__main__":
     from turbulencedetailedburbank import plot_detailed_turbulence_burbank
     from turbulencedetailedgeneral import plot_detailed_turbulence_general
     from turbulencefull import plot_turbulence_full_range
-    from spatialturbulence import plot_turbulence_for_jan6_to_jan9_google_maps, plot_turbulence_for_dec30_to_jan5_google_maps, plot_turbulence_for_jan6_to_jan9_google_maps_altitude, plot_turbulence_for_dec30_to_jan5_google_maps_altitude
+    from spatialturbulence import plot_turbulence_for_jan6_to_jan9_google_maps, plot_turbulence_for_dec30_to_jan5_google_maps, plot_turbulence_for_jan6_to_jan9_google_maps_altitude, plot_turbulence_for_dec30_to_jan5_google_maps_altitude, plot_lax_pireps
 
     # svg plots
 
@@ -119,11 +119,11 @@ if __name__ == "__main__":
     # plot_turbulence_full_range(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_full_dir_svg, True, True)
 
     # PLOT TURBULENCE FOR DEC 30 to JAN 9
-    plot_turbulence_for_jan6_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain)
-    plot_turbulence_for_dec30_to_jan5_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain)
+    plot_turbulence_for_jan6_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_dec30_to_jan5_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
     plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
     plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-
+    plot_lax_pireps(df, "LAX Pireps", output_dir_svg_spatial_terrain)
     # png plots
 
     # PLOT TURBULENCE DETAILED

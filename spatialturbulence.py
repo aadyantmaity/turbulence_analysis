@@ -9,8 +9,7 @@ def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
 
     start_date = pd.Timestamp('2025-01-06')
     end_date = pd.Timestamp('2025-01-09 23:59:59')
-    chunk_df_jan6_jan9 = df[(df['valid'] >= start_date)
-                            & (df['valid'] <= end_date)]
+    chunk_df_jan6_jan9 = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
 
     if not chunk_df_jan6_jan9.empty:
         title = f"{title_prefix} Jan 6 - Jan 9"
@@ -70,16 +69,12 @@ def plot_turbulence_for_jan6_to_jan9_google_maps(df, title_prefix, save_dir):
             ~chunk_df_jan6_jan9.index.isin(smooth.index)
         ]
 
+        gmap.scatter(modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50)
+        gmap.scatter(severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50)
+        gmap.scatter(moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50)
+        gmap.scatter(light_turbulence['lat'], light_turbulence['lon'], color='green', size=50)
         gmap.scatter(smooth['lat'], smooth['lon'], color='gray', size=50)
         gmap.scatter(no_data['lat'], no_data['lon'], color='gray', size=50)
-        gmap.scatter(
-            light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
-        gmap.scatter(
-            moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50, label='')
-        gmap.scatter(
-            modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50, label='')
-        gmap.scatter(
-            severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50, label='')
 
         airports = df['report'].dropna().str.extract(
             r'\b(K?[A-Z]{3})\b')[0].unique()
@@ -104,8 +99,7 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
 
     start_date = pd.Timestamp('2024-12-30')
     end_date = pd.Timestamp('2025-01-05 23:59:59')
-    chunk_df_dec30_jan5 = df[(df['valid'] >= start_date)
-                             & (df['valid'] <= end_date)]
+    chunk_df_dec30_jan5 = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
 
     if not chunk_df_dec30_jan5.empty:
         title = f"{title_prefix} Dec 30 - Jan 5"
@@ -162,21 +156,15 @@ def plot_turbulence_for_dec30_to_jan5_google_maps(df, title_prefix, save_dir):
             ~chunk_df_dec30_jan5.index.isin(modsev_turbulence.index) &
             ~chunk_df_dec30_jan5.index.isin(moderate_turbulence.index) &
             ~chunk_df_dec30_jan5.index.isin(light_turbulence.index) &
-            ~ chunk_df_dec30_jan5.index.isin(smooth.index)
+            ~chunk_df_dec30_jan5.index.isin(smooth.index)
         ]
 
-        gmap.scatter(smooth['lat'], smooth['lon'],
-                     color='gray', size=50, label='')
-        gmap.scatter(no_data['lat'], no_data['lon'],
-                     color='gray', size=50, label='')
-        gmap.scatter(
-            light_turbulence['lat'], light_turbulence['lon'], color='green', size=50, label='')
-        gmap.scatter(
-            moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50, label='')
-        gmap.scatter(
-            modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50, label='')
-        gmap.scatter(
-            severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50, label='')
+        gmap.scatter(modsev_turbulence['lat'], modsev_turbulence['lon'], color='orange', size=50)
+        gmap.scatter(severe_turbulence['lat'], severe_turbulence['lon'], color='red', size=50)
+        gmap.scatter(moderate_turbulence['lat'], moderate_turbulence['lon'], color='yellow', size=50)
+        gmap.scatter(light_turbulence['lat'], light_turbulence['lon'], color='green', size=50)
+        gmap.scatter(smooth['lat'], smooth['lon'], color='gray', size=50)
+        gmap.scatter(no_data['lat'], no_data['lon'], color='gray', size=50)
 
         airport_coords = {
             'LAX': (33.9416, -118.4085),
@@ -247,7 +235,6 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
 
-
 def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
     
@@ -272,7 +259,7 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         altitude_df = chunk_df[(chunk_df['fl'] >= alt_min) & (chunk_df['fl'] <= alt_max)]
         
         if altitude_df.empty:
-            print("Empty")
+            continue
         
         title = f"{title_prefix} {alt_label} (Dec 30 - Jan 5)"
         filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_dec30_jan5.html"
@@ -302,3 +289,31 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
+
+def plot_lax_pireps(df, title_prefix, save_dir):
+    df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
+
+    start_date = pd.Timestamp('2024-12-30')
+    end_date = pd.Timestamp('2025-01-09 23:59:59')
+    lax_reports = df[(df['valid'] >= start_date) & (df['valid'] <= end_date) & df['report'].str.contains(r'\bLAX\b|\bKLAX\b', na=False)]
+
+    if not lax_reports.empty:
+        title = f"{title_prefix} LAX PIREPs"
+
+        filename = "lax_pireps_map.html"
+        filepath = os.path.join(save_dir, filename)
+
+        gmap = gmplot.GoogleMapPlotter.from_geocode(
+            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME")
+
+        gmap.scatter(lax_reports['lat'], lax_reports['lon'], color='blue', size=50)
+
+        gmap.draw(filepath)
+        print(f"Saved plot: {filepath}")
+        print(f"Number of LAX/KLAX reports plotted: {lax_reports.shape[0]}")
+
+        # Save the LAX/KLAX reports to a CSV file
+        csv_filename = "lax_pireps.csv"
+        csv_filepath = os.path.join(save_dir, csv_filename)
+        lax_reports.to_csv(csv_filepath, index=False)
+        print(f"Saved LAX/KLAX reports to CSV: {csv_filepath}")
