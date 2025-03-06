@@ -312,8 +312,7 @@ def plot_lax_pireps(df, title_prefix, save_dir):
         print(f"Saved plot: {filepath}")
         print(f"Number of LAX/KLAX reports plotted: {lax_reports.shape[0]}")
 
-        # Save the LAX/KLAX reports to a CSV file
-        csv_filename = "lax_pireps.csv"
+        csv_filename = "lax_pireps_unique_coords.csv"
         csv_filepath = os.path.join(save_dir, csv_filename)
-        lax_reports.to_csv(csv_filepath, index=False)
-        print(f"Saved LAX/KLAX reports to CSV: {csv_filepath}")
+        lax_reports.drop_duplicates(subset=['lat', 'lon']).to_csv(csv_filepath, index=False)
+        print(f"Saved unique LAX/KLAX reports with unique coordinates to CSV: {csv_filepath}")
