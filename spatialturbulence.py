@@ -290,29 +290,15 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
 
-def plot_lax_pireps(df, title_prefix, save_dir):
+def save_pireps_to_csv(df, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
     start_date = pd.Timestamp('2024-12-30')
     end_date = pd.Timestamp('2025-01-09 23:59:59')
-    lax_reports = df[(df['valid'] >= start_date) & (df['valid'] <= end_date) & df['report'].str.contains(r'\bLAX\b|\bKLAX\b', na=False)]
+    filtered_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
 
-    if not lax_reports.empty:
-        title = f"{title_prefix} LAX PIREPs"
-
-        filename = "lax_pireps_map.html"
-        filepath = os.path.join(save_dir, filename)
-
-        gmap = gmplot.GoogleMapPlotter.from_geocode(
-            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME")
-
-        gmap.scatter(lax_reports['lat'], lax_reports['lon'], color='blue', size=50)
-
-        gmap.draw(filepath)
-        print(f"Saved plot: {filepath}")
-        print(f"Number of LAX/KLAX reports plotted: {lax_reports.shape[0]}")
-
-        csv_filename = "lax_pireps_unique_coords.csv"
+    if not filtered_df.empty:
+        csv_filename = "pireps_dec30_to_jan9.csv"
         csv_filepath = os.path.join(save_dir, csv_filename)
-        lax_reports.drop_duplicates(subset=['lat', 'lon']).to_csv(csv_filepath, index=False)
-        print(f"Saved unique LAX/KLAX reports with unique coordinates to CSV: {csv_filepath}")
+        filtered_df.to_csv(csv_filepath, index=False)
+        print(f"Saved PIREPs from Dec 30, 2024 to Jan 9, 2025 to CSV: {csv_filepath}")
