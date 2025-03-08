@@ -289,16 +289,21 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
         
         gmap.draw(filepath)
         print(f"Saved plot: {filepath}")
-
+        
 def save_pireps_to_csv(df, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
     start_date = pd.Timestamp('2024-12-30')
     end_date = pd.Timestamp('2025-01-09 23:59:59')
     filtered_df = df[(df['valid'] >= start_date) & (df['valid'] <= end_date)]
+    filtered_df_unique = filtered_df.drop_duplicates(subset=['lat', 'lon'])
 
     if not filtered_df.empty:
         csv_filename = "pireps_dec30_to_jan9.csv"
+        csv_new_filename = "pireps_dec30_to_jan9_unique.csv"
         csv_filepath = os.path.join(save_dir, csv_filename)
+        csv_filename_unique_filepath = os.path.join(save_dir, csv_new_filename)
         filtered_df.to_csv(csv_filepath, index=False)
+        filtered_df_unique.to_csv(csv_filename_unique_filepath, index=False)
         print(f"Saved PIREPs from Dec 30, 2024 to Jan 9, 2025 to CSV: {csv_filepath}")
+
