@@ -3,10 +3,10 @@ import numpy as np
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
-from config import year_chunks, year_chunks_general, year_chunks_3
-from preprocessing import preprocess_data
+from utils.config import year_chunks, year_chunks_general, year_chunks_3
+from utils.preprocessing import preprocess_data
 from old_plotting_scripts.santaana import offshoreFilter
-from directorycreator import createDirectories, output_dir_svg_spatial_terrain, detailed_general_dir_svg, detailed_burbank_dir_svg, detailed_offshore_dir_svg, general_3year_dir_svg, burbank_3year_dir_svg, offshore_3year_dir_svg, burbank_full_dir_svg, general_full_dir_svg, offshore_full_dir_svg, detailed_general_dir_png, detailed_burbank_dir_png, detailed_offshore_dir_png, general_3year_dir_png, burbank_3year_dir_png, offshore_3year_dir_png, burbank_full_dir_png, general_full_dir_png, offshore_full_dir_png
+from utils.directorycreator import createDirectories, output_dir_svg_spatial_terrain, detailed_general_dir_svg, detailed_burbank_dir_svg, detailed_offshore_dir_svg, general_3year_dir_svg, burbank_3year_dir_svg, offshore_3year_dir_svg, burbank_full_dir_svg, general_full_dir_svg, offshore_full_dir_svg, detailed_general_dir_png, detailed_burbank_dir_png, detailed_offshore_dir_png, general_3year_dir_png, burbank_3year_dir_png, offshore_3year_dir_png, burbank_full_dir_png, general_full_dir_png, offshore_full_dir_png
 
 # PREPROCESSING
 input_csv = "pireps_200311300000_202502132359 (1).csv"
@@ -32,9 +32,6 @@ max_year = df['year'].max()
 year_chunks = list(range(min_year, max_year + 1, 2))
 year_chunks_general = list(range(min_year, max_year))
 year_chunks_3 = list(range(min_year, max_year + 1, 3))
-
-
-
 
 if __name__ == "__main__":
     from old_plotting_scripts.turbulence3yearchunks import plot_turbulence_by_3year_chunks

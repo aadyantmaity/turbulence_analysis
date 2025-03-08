@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from config import year_chunks_general
+from utils.config import year_chunks_general
 import os
 from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates

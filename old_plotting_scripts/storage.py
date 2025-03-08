@@ -1,3 +1,8 @@
+import os
+import matplotlib as plt
+from mpl_toolkits.basemap import Basemap
+import pandas as pd
+import gmplot
 def plot_turbulence_on_map(df, title_prefix, save_dir, svg_status):
     start_year, end_year = 2003, 2026
     chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]

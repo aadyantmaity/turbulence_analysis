@@ -1,4 +1,4 @@
-from config import year_chunks_3
+from utils.config import year_chunks_3
 import matplotlib.pyplot as plt
 import os
 from matplotlib.ticker import MaxNLocator
