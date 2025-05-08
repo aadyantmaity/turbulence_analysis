@@ -38,13 +38,14 @@ if __name__ == "__main__":
     from old_plotting_scripts.turbulencedetailedburbank import plot_detailed_turbulence_burbank
     from old_plotting_scripts.turbulencedetailedgeneral import plot_detailed_turbulence_general
     from old_plotting_scripts.turbulencefull import plot_turbulence_full_range
-    from spatialturbulence import plot_turbulence_for_jan6_to_jan9_google_maps, plot_turbulence_for_dec30_to_jan5_google_maps, plot_turbulence_for_jan6_to_jan9_google_maps_altitude, plot_turbulence_for_dec30_to_jan5_google_maps_altitude, save_pireps_to_csv
+    from spatialturbulence import plot_turbulence_for_jan6_to_jan9_google_maps, plot_turbulence_for_dec30_to_jan5_google_maps, plot_turbulence_for_jan6_to_jan9_google_maps_altitude, plot_turbulence_for_dec30_to_jan5_google_maps_altitude, plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks, save_pireps_to_csv
 
     # PLOT TURBULENCE FOR DEC 30 to JAN 9
-    # plot_turbulence_for_jan6_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-    # plot_turbulence_for_dec30_to_jan5_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-    # plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-    # plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_jan6_to_jan9_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_dec30_to_jan5_google_maps(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
+    plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks(df, "Turbulence Reports", output_dir_svg_spatial_terrain)
     # save_pireps_to_csv(df, output_dir_svg_spatial_terrain)
     
     # png plots
@@ -55,9 +56,9 @@ if __name__ == "__main__":
     # plot_detailed_turbulence_general(offshore_flow, "Detailed Turbulence Reports - Offshore Flow", detailed_offshore_dir_png)
 
     # PLOT TURBULENCE 3 YEAR CHUNKS
-    plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False)
-    plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True)
-    plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, False)
+    # plot_turbulence_by_3year_chunks(df, "Turbulence Reports", general_3year_dir_png, False)
+    # plot_turbulence_by_3year_chunks(burbank_turbulence, "Turbulence Reports - Burbank (BUR)", burbank_3year_dir_png, True)
+    # plot_turbulence_by_3year_chunks(offshore_flow, "Turbulence Reports - Offshore Flow", offshore_3year_dir_png, False)
 
     # PLOT TURBULENCE FULL Range
     # plot_turbulence_full_range(df, "Turbulence Reports", general_full_dir_png)

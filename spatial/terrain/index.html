@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Turbulence Hourly Plots Carousel</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        h1 { font-size: 1.5em; }
+        #carousel-container { width: 90vw; max-width: 1200px; margin: 2em auto; }
+        #carousel-frame { width: 100%; height: 80vh; border: 1px solid #ccc; }
+        #carousel-controls { text-align: center; margin-top: 1em; }
+        button { padding: 0.5em 1.5em; margin: 0 1em; font-size: 1em; }
+        #carousel-caption { text-align: center; margin-top: 0.5em; font-size: 1em; }
+    </style>
+</head>
+<body>
+    <h1>Turbulence Hourly Plots Carousel</h1>
+    <div id="carousel-container">
+        <iframe id="carousel-frame" src="" frameborder="0" allowfullscreen></iframe>
+        <div id="carousel-caption"></div>
+        <div id="carousel-controls">
+            <button id="prev-btn">&lt; Previous</button>
+            <button id="next-btn">Next &gt;</button>
+        </div>
+    </div>
+    <script>
+        // List of plot files (same as before)
+        const files = [
+            "turbulence_map_0_2000_ft_20250106_block_15-18_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250106_block_18-21_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250107_block_15-18_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250107_block_18-21_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250107_block_21-00_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250108_block_00-03_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250108_block_03-06_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250108_block_12-15_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250108_block_18-21_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250109_block_15-18_jan6_jan9.html",
+            "turbulence_map_0_2000_ft_20250109_block_21-00_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250106_block_15-18_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_00-03_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_03-06_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_12-15_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_15-18_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_18-21_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250108_block_21-00_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250109_block_00-03_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250109_block_15-18_jan6_jan9.html",
+            "turbulence_map_2000_4000_ft_20250109_block_21-00_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250107_block_12-15_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250107_block_15-18_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250107_block_18-21_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250107_block_21-00_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250108_block_03-06_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250108_block_12-15_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250108_block_15-18_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250108_block_18-21_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250108_block_21-00_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250109_block_15-18_jan6_jan9.html",
+            "turbulence_map_4000_6000_ft_20250109_block_18-21_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250107_block_12-15_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250107_block_15-18_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250107_block_18-21_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250107_block_21-00_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250108_block_12-15_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250108_block_15-18_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250108_block_21-00_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250109_block_15-18_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250109_block_18-21_jan6_jan9.html",
+            "turbulence_map_6000_8000_ft_20250109_block_21-00_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250107_block_18-21_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250108_block_12-15_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250108_block_15-18_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250108_block_18-21_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250108_block_21-00_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250109_block_00-03_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250109_block_15-18_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250109_block_18-21_jan6_jan9.html",
+            "turbulence_map_8000_12000_ft_20250109_block_21-00_jan6_jan9.html",
+            "turbulence_map_12000_20000_ft_20250108_block_18-21_jan6_jan9.html",
+            "turbulence_map_12000_20000_ft_20250108_block_21-00_jan6_jan9.html",
+            "turbulence_map_12000_20000_ft_20250109_block_21-00_jan6_jan9.html"
+        ];
+
+        let current = 0;
+        const frame = document.getElementById('carousel-frame');
+        const caption = document.getElementById('carousel-caption');
+        function show(idx) {
+            if (idx < 0) idx = files.length - 1;
+            if (idx >= files.length) idx = 0;
+            current = idx;
+            frame.src = files[current];
+            caption.textContent = files[current];
+        }
+        document.getElementById('prev-btn').onclick = () => show(current - 1);
+        document.getElementById('next-btn').onclick = () => show(current + 1);
+        // Show first plot on load
+        show(0);
+    </script>
+</body>
+</html>
