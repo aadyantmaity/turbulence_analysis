@@ -4,6 +4,7 @@ import os
 from matplotlib.ticker import MaxNLocator
 import pandas as pd
 import matplotlib.dates as mdates
+from matplotlib.lines import Line2D
 
 
 def plot_turbulence_full_range(df, title_prefix, save_dir):
@@ -51,17 +52,25 @@ def plot_turbulence_full_range(df, title_prefix, save_dir):
     dot_size = 50
 
     plt.scatter(mod_turbulence['valid'], mod_turbulence['fl'], color=mod_color,
-                label='Moderate Turbulence (MOD)', alpha=0.7, s=dot_size)
+                alpha=0.7, s=dot_size)
     plt.scatter(sev_turbulence['valid'], sev_turbulence['fl'], color=sev_color,
-                label='Severe Turbulence (SEV)', alpha=0.7, s=dot_size)
+                alpha=0.7, s=dot_size)
     plt.scatter(combined_turbulence['valid'], combined_turbulence['fl'], color=combined_color,
-                label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.7, s=dot_size)
+                alpha=0.7, s=dot_size)
 
     plt.xlabel("Date (UTC)")
     plt.ylabel("Flight Level (FL)")
     plt.title(title)
     plt.xticks(rotation=90)
     plt.grid(True)
+
+    # Custom legend with all three colors
+    legend_elements = [
+        Line2D([0], [0], marker='o', color='w', label='Moderate Turbulence (MOD)', markerfacecolor=mod_color, markersize=10),
+        Line2D([0], [0], marker='o', color='w', label='Severe Turbulence (SEV)', markerfacecolor=sev_color, markersize=10),
+        Line2D([0], [0], marker='o', color='w', label='Moderate-Severe Turbulence (MOD-SEV)', markerfacecolor=combined_color, markersize=10)
+    ]
+    plt.legend(handles=legend_elements, loc='upper right')
 
     start_date = chunk_df['valid'].min()
     end_date = chunk_df['valid'].max()

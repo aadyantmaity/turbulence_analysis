@@ -3,7 +3,7 @@ from utils.config import year_chunks_general
 import os
 from matplotlib.ticker import MaxNLocator
 import matplotlib.dates as mdates
-
+from matplotlib.lines import Line2D
 
 def plot_detailed_turbulence_general(df, title_prefix, save_dir):
     for start_year in year_chunks_general:
@@ -54,16 +54,24 @@ def plot_detailed_turbulence_general(df, title_prefix, save_dir):
             daily_combined_turbulence = combined_turbulence[combined_turbulence['valid'].dt.date == date]
 
             plt.scatter(daily_mod_turbulence['valid'], daily_mod_turbulence['fl'],
-                        color=mod_color, label='Moderate Turbulence (MOD)', alpha=0.4, s=15 * count)
+                        color=mod_color, alpha=0.4, s=15 * count)
             plt.scatter(daily_sev_turbulence['valid'], daily_sev_turbulence['fl'],
-                        color=sev_color, label='Severe Turbulence (SEV)', alpha=0.4, s=15 * count)
+                        color=sev_color, alpha=0.4, s=15 * count)
             plt.scatter(daily_combined_turbulence['valid'], daily_combined_turbulence['fl'],
-                        color=combined_color, label='Moderate-Severe Turbulence (MOD-SEV)', alpha=0.4, s=15 * count)
+                        color=combined_color, alpha=0.4, s=15 * count)
 
         plt.xlabel("Date (UTC)")
         plt.ylabel("Flight Level (FL)")
         plt.title(title)
         plt.grid(True)
+
+        # Custom legend with all three colors
+        legend_elements = [
+            Line2D([0], [0], marker='o', color='w', label='Moderate Turbulence (MOD)', markerfacecolor=mod_color, markersize=10),
+            Line2D([0], [0], marker='o', color='w', label='Severe Turbulence (SEV)', markerfacecolor=sev_color, markersize=10),
+            Line2D([0], [0], marker='o', color='w', label='Moderate-Severe Turbulence (MOD-SEV)', markerfacecolor=combined_color, markersize=10)
+        ]
+        plt.legend(handles=legend_elements, loc='upper right')
 
         plt.ylim(0, 40000)
 

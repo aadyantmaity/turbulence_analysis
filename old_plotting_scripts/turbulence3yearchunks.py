@@ -4,6 +4,7 @@ import os
 from matplotlib.ticker import MaxNLocator
 import pandas as pd
 import matplotlib.dates as mdates
+from matplotlib.lines import Line2D
 
 
 def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_status):
@@ -77,6 +78,12 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
         plt.title(title)
         plt.xticks(rotation=90)
         plt.grid(True)
+        legend_elements = [
+            Line2D([0], [0], marker='o', color='w', label='Moderate Turbulence (MOD)', markerfacecolor=mod_color, markersize=10),
+            Line2D([0], [0], marker='o', color='w', label='Severe Turbulence (SEV)', markerfacecolor=sev_color, markersize=10),
+            Line2D([0], [0], marker='o', color='w', label='Moderate-Severe Turbulence (MOD-SEV)', markerfacecolor=modsev_color, markersize=10)
+        ]
+        plt.legend(handles=legend_elements, loc='upper right')
 
         start_date = chunk_df['valid'].min()
         end_date = chunk_df['valid'].max()
