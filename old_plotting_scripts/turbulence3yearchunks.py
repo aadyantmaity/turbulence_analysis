@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.dates as mdates
 
 
-def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_status, svg_status):
+def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_status):
     for start_year in year_chunks_3:
         end_year = start_year + 3
         chunk_df = df[(df['year'] >= start_year) & (df['year'] < end_year)]
@@ -15,10 +15,8 @@ def plot_turbulence_by_3year_chunks(df, title_prefix, save_dir, annotation_statu
             continue
 
         title = f"{title_prefix} {start_year}-{end_year - 1}"
-        if svg_status:
-            filename = f"turbulence_{start_year}_{end_year - 1}.svg"
-        else:
-            filename = f"turbulence_{start_year}_{end_year - 1}.png"
+        
+        filename = f"turbulence_{start_year}_{end_year - 1}.png"
         filepath = os.path.join(save_dir, filename)
 
         plt.figure(figsize=(25, 10))
