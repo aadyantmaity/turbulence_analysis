@@ -1,5 +1,4 @@
 import pandas as pd
-import gmplot
 import os
 
 df = pd.read_csv("pireps_200311300000_202502132359 (1).csv", low_memory=False)

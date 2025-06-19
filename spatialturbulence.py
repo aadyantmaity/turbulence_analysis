@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-import gmplot
+import folium
 
 
-def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save_dir):
+def plot_turbulence_for_jan6_to_jan9_folium_altitude(df, title_prefix, save_dir):
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
     start_date = pd.Timestamp('2025-01-06')
@@ -31,12 +31,11 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
             continue
 
         title = f"{title_prefix} {alt_label} (Jan 6 - Jan 9)"
-        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_jan6_jan9.html"
+        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_jan6_jan9_folium.html"
         filepath = os.path.join(save_dir, filename)
 
-        gmap = gmplot.GoogleMapPlotter.from_geocode(
-            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME"
-        )
+        # Center on Los Angeles
+        fmap = folium.Map(location=[34.054908, -118.242643], zoom_start=10)
 
         severity_categories = {
             "severe": ("red", [r'\bSEVERE\b', r'\bSEV\b']),
@@ -51,15 +50,37 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude(df, title_prefix, save
             severity_df = altitude_df[~altitude_df.index.isin(plotted_indices) &
                                       altitude_df['turbulence'].str.contains('|'.join(patterns), na=False)]
             plotted_indices.update(severity_df.index)
-            gmap.scatter(severity_df['lat'],
-                         severity_df['lon'], color=color, size=50)
+            for _, row in severity_df.iterrows():
+                folium.CircleMarker(
+                    location=[row['lat'], row['lon']],
+                    radius=6,
+                    color=color,
+                    fill=True,
+                    fill_color=color,
+                    fill_opacity=0.7,
+                    popup=row.get('turbulence', '')
+                ).add_to(fmap)
 
         no_data_df = altitude_df[~altitude_df.index.isin(plotted_indices)]
-        gmap.scatter(no_data_df['lat'],
-                     no_data_df['lon'], color='gray', size=50)
+        for _, row in no_data_df.iterrows():
+            folium.CircleMarker(
+                location=[row['lat'], row['lon']],
+                radius=6,
+                color='gray',
+                fill=True,
+                fill_color='gray',
+                fill_opacity=0.7,
+                popup=row.get('turbulence', '')
+            ).add_to(fmap)
+
+        fmap.save(filepath)
+        print(f"Saved plot: {filepath}")
 
 
-def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, save_dir):
+def plot_turbulence_for_dec30_to_jan5_folium_altitude(df, title_prefix, save_dir):
+    """
+    For each altitude range, generate Folium plots for Dec 30-Jan 5.
+    """
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
 
     start_date = pd.Timestamp('2024-12-30')
@@ -87,12 +108,11 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
             continue
 
         title = f"{title_prefix} {alt_label} (Dec 30 - Jan 5)"
-        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_dec30_jan5.html"
+        filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_dec30_jan5_folium.html"
         filepath = os.path.join(save_dir, filename)
 
-        gmap = gmplot.GoogleMapPlotter.from_geocode(
-            "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME"
-        )
+        # Center on Los Angeles
+        fmap = folium.Map(location=[34.054908, -118.242643], zoom_start=10)
 
         severity_categories = {
             "severe": ("red", [r'\bSEVERE\b', r'\bSEV\b']),
@@ -107,17 +127,36 @@ def plot_turbulence_for_dec30_to_jan5_google_maps_altitude(df, title_prefix, sav
             severity_df = altitude_df[~altitude_df.index.isin(plotted_indices) &
                                       altitude_df['turbulence'].str.contains('|'.join(patterns), na=False)]
             plotted_indices.update(severity_df.index)
-            gmap.scatter(severity_df['lat'],
-                         severity_df['lon'], color=color, size=50)
+            for _, row in severity_df.iterrows():
+                folium.CircleMarker(
+                    location=[row['lat'], row['lon']],
+                    radius=6,
+                    color=color,
+                    fill=True,
+                    fill_color=color,
+                    fill_opacity=0.7,
+                    popup=row.get('turbulence', '')
+                ).add_to(fmap)
 
         no_data_df = altitude_df[~altitude_df.index.isin(plotted_indices)]
-        gmap.scatter(no_data_df['lat'],
-                     no_data_df['lon'], color='gray', size=50)
+        for _, row in no_data_df.iterrows():
+            folium.CircleMarker(
+                location=[row['lat'], row['lon']],
+                radius=6,
+                color='gray',
+                fill=True,
+                fill_color='gray',
+                fill_opacity=0.7,
+                popup=row.get('turbulence', '')
+            ).add_to(fmap)
+
+        fmap.save(filepath)
+        print(f"Saved plot: {filepath}")
 
 
-def plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks(df, title_prefix, save_dir):
+def plot_turbulence_for_jan6_to_jan9_folium_altitude_hourblocks(df, title_prefix, save_dir):
     """
-    For each altitude range, generate Google Maps plots for Jan 6-9,
+    For each altitude range, generate Folium plots for Jan 6-9,
     with each plot showing turbulence reports for a specific altitude and a 3-hour block.
     """
     df['valid'] = pd.to_datetime(df['valid']).dt.tz_localize(None)
@@ -162,12 +201,12 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks(df, title_p
                 block_label = f"{block:02d}-{(block+3)%24:02d}"
                 date_str = pd.Timestamp(date).strftime('%Y%m%d')
                 title = f"{title_prefix} {alt_label} {date} {block_label} (Jan 6 - Jan 9)"
-                filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_{date_str}_block_{block_label}_jan6_jan9.html"
+                filename = f"turbulence_map_{alt_label.replace(' ', '_').replace('-', '_')}_{date_str}_block_{block_label}_jan6_jan9_folium.html"
                 filepath = os.path.join(save_dir, filename)
 
-                gmap = gmplot.GoogleMapPlotter.from_geocode(
-                    "Los Angeles", apikey="AIzaSyDp5kKQuO3fJVBMwcWYkPldbq1eDNb9AME"
-                )
+                # Center on Los Angeles
+                fmap = folium.Map(
+                    location=[34.054908, -118.242643], zoom_start=10)
 
                 severity_categories = {
                     "severe": ("red", [r'\bSEVERE\b', r'\bSEV\b']),
@@ -182,12 +221,28 @@ def plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks(df, title_p
                     severity_df = block_df[~block_df.index.isin(plotted_indices) &
                                            block_df['turbulence'].str.contains('|'.join(patterns), na=False)]
                     plotted_indices.update(severity_df.index)
-                    gmap.scatter(
-                        severity_df['lat'], severity_df['lon'], color=color, size=50)
+                    for _, row in severity_df.iterrows():
+                        folium.CircleMarker(
+                            location=[row['lat'], row['lon']],
+                            radius=6,
+                            color=color,
+                            fill=True,
+                            fill_color=color,
+                            fill_opacity=0.7,
+                            popup=row.get('turbulence', '')
+                        ).add_to(fmap)
 
                 no_data_df = block_df[~block_df.index.isin(plotted_indices)]
-                gmap.scatter(
-                    no_data_df['lat'], no_data_df['lon'], color='gray', size=50)
+                for _, row in no_data_df.iterrows():
+                    folium.CircleMarker(
+                        location=[row['lat'], row['lon']],
+                        radius=6,
+                        color='gray',
+                        fill=True,
+                        fill_color='gray',
+                        fill_opacity=0.7,
+                        popup=row.get('turbulence', '')
+                    ).add_to(fmap)
 
-                gmap.draw(filepath)
+                fmap.save(filepath)
                 print(f"Saved plot: {filepath}")

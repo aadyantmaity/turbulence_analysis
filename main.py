@@ -16,14 +16,14 @@ df, _ = preprocess_data(input_csv, output_csvs)
 
 if __name__ == "__main__":
     from spatialturbulence import (
-        plot_turbulence_for_jan6_to_jan9_google_maps_altitude,
-        plot_turbulence_for_dec30_to_jan5_google_maps_altitude,
-        plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks,
+        plot_turbulence_for_jan6_to_jan9_folium_altitude,
+        plot_turbulence_for_dec30_to_jan5_folium_altitude,
+        plot_turbulence_for_jan6_to_jan9_folium_altitude_hourblocks,
     )
 
-    plot_turbulence_for_jan6_to_jan9_google_maps_altitude(
+    plot_turbulence_for_jan6_to_jan9_folium_altitude(
         df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-    plot_turbulence_for_dec30_to_jan5_google_maps_altitude(
+    plot_turbulence_for_dec30_to_jan5_folium_altitude(
         df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
-    plot_turbulence_for_jan6_to_jan9_google_maps_altitude_hourblocks(
+    plot_turbulence_for_jan6_to_jan9_folium_altitude_hourblocks(
         df, "Turbulence Reports", output_dir_svg_spatial_terrain_altitude)
